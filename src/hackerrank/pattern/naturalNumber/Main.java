@@ -8,17 +8,6 @@ public class Main {
         Scanner scn = new Scanner(System.in);
         int number = scn.nextInt();
         String str = "*\t";
-        // for(int i = 1; i <= number; i++){
-        //     System.out.println(str.repeat(i));
-        //     // String repeated = new String(new char[i]).replace("\0", str);
-        //     // System.out.println(repeated);
-        // }
-        // for(int i = 1; i <= number; i++) {
-        //     for(int j = 1; j <= i; j++) {
-        //         System.out.print(str);
-        //     }
-        //     System.out.println();
-        // }
         for(int i = 1; i <= number; i++){
             for(int j = 1; j <= i; j++){
                 System.out.print("*\t");
