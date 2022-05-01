@@ -15,8 +15,6 @@ public class CandidateCode {
 
         List<Character> dad = new ArrayList<>();
 
-
-
         for(int i = 0; i < s.length(); i++){
             if(s.charAt(i)=='M' || s.charAt(i) == 'O'){
                 mom.add(s.charAt(i));
