@@ -5,22 +5,18 @@ import java.util.*;
 
 
 class LongestSubstringWithoutRepeatingCharacter {
-    boolean checkUnique(String s){
-        HashSet<Character> hs = new HashSet<>();
-        for(Character c : s.toCharArray()){
-            if(!hs.add(c)) return false;
-        }
-        return true;
-    }
     public int lengthOfLongestSubstring(String s) {
-        int mx = 0;
-        // generate all substrings
-        for(int i = 0; i < s.length(); i++){
-            for(int j = i; j < s.length(); j++){
-                if(checkUnique(s.substring(i,j+1))){
-                    mx = Math.max(mx, j-i +1 );
-                }
+        int slow = 0, fast = 0;
+        int mx = 1;
+        HashSet<Character> hs = new HashSet<>();
+        hs.add(s.charAt(fast));
+        while(slow < s.length() && fast < s.length()){
+            while(fast+1 < s.length() && hs.add(s.charAt(fast+1))){
+                mx = Math.max(mx, hs.size());
+                fast++;
             }
+            hs.remove(s.charAt(slow));
+            slow++;
         }
         return mx;
     }
