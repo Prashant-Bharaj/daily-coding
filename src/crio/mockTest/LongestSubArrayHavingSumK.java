@@ -19,33 +19,38 @@ class LongestSubarrayHavingSumK{
     }
 
     static int longestSubarrayHavingSumK(int n, int k, int arr[]){
-        int[] prefix = new int[n];
-        prefix[0] = arr[0];
-        for(int i = 1; i < n; i++){
-            prefix[i] = prefix[i-1] + arr[i];
-        }
-        int fast = 0, slow = 0, mxLen = 0;
-        while(fast < n && prefix[fast] != k){
-            fast++;
-        }
-        mxLen = fast-slow +1;
-        fast++;
-//        slow++;
-        while(slow < n && fast < n){
-            if(prefix[fast] - prefix[slow] == k){
-                mxLen = Math.max(mxLen, fast-slow );
-//                slow++;
-                fast++;
-            }
-            while(fast < n&& (prefix[fast] - prefix[slow] < k)){
-                fast++;
-            }
-            while(slow < n && fast < n && (prefix[fast] - prefix[slow] > k)){
-                slow++;
-            }
-        }
-        return mxLen;
 
+        // HashMap to store (sum, index) tuples
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int sum = 0, maxLen = 0;
+
+        // traverse the given array
+        for (int i = 0; i < n; i++) {
+
+            // accumulate sum
+            sum += arr[i];
+
+            // when subarray starts from index '0'
+            if (sum == k)
+                maxLen = i + 1;
+
+            // make an entry for 'sum' if it is
+            // not present in 'map'
+            if (!map.containsKey(sum)) {
+                map.put(sum, i);
+            }
+
+            // check if 'sum-k' is present in 'map'
+            // or not
+            if (map.containsKey(sum - k)) {
+
+                // update maxLength
+                if (maxLen < (i - map.get(sum - k)))
+                    maxLen = i - map.get(sum - k);
+            }
+        }
+
+        return maxLen;
     }
 }
 
