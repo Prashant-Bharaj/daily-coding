@@ -22,7 +22,7 @@ import static java.nio.file.StandardOpenOption.*;
  * */
 public class CountLines {
     public static void main(String[] args) {
-        BufferedReader bufferedReader=null;
+        BufferedReader bufferedReader;
         BufferedWriter bufferedWriter=null;
         try{
             bufferedReader = Files.newBufferedReader(Paths.get("C:\\Users\\prash\\OneDrive\\Documents\\GitHub\\daily coding\\src\\crio\\coreJava1\\prework\\input.txt"), StandardCharsets.UTF_8);
