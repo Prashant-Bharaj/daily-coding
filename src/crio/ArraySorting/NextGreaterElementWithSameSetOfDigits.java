@@ -1,4 +1,4 @@
-package crio.ArraySorting;
+ package crio.ArraySorting;
 
 import java.util.*;
 
@@ -9,37 +9,66 @@ class NextGreaterElementWithSameSetOfDigits{
         n=sc.nextInt();
         System.out.print(nextGreaterElementWithSameSetOfDigits(n));
     }
+    public static int convertListToNumber(List<Integer> ls){
+        int newNumber = 0;
+        for(int i = 0; i < ls.size(); i++){
+            newNumber += ls.get(i) * Math.pow(10,ls.size()-1-i);
+        }
+        return newNumber;
+    }
+    public static void sort(List<Integer> ls, int from, int to){
+        for(int i = from; i < to; i++){
+            for(int j = i+1; j < to; j++){
+                if(ls.get(i) > ls.get(j)){
+                    Collections.swap(ls, i, j);
+                }
+            }
+        }
+    }
 
-    static int nextGreaterElementWithSameSetOfDigits(int n){
+    public static int findNextLeastGreaterThanCurr(List<Integer> ls, int k, int from){
+        int minIndexOfNextElement = from;
+        for(int fn = from+1; fn < ls.size(); fn++){
+            if(ls.get(k) < ls.get(fn) && ls.get(fn) < ls.get(minIndexOfNextElement)){
+                minIndexOfNextElement  = fn;
+            }
+        }
+        return minIndexOfNextElement;
+    }
+
+    public static List<Integer> convertNumberToList(int n){
         List<Integer> ls = new ArrayList<>();
         while(n > 0){
             ls.add(n%10);
             n/=10;
         }
         Collections.reverse(ls);
+        return ls;
+    }
+
+    static int nextGreaterElementWithSameSetOfDigits(int n){
+
+        List<Integer> ls = convertNumberToList(n);
+
         if(ls.size() == 1) return -1;
-        int min = ls.get(ls.size()-1);
+
         int first = ls.size()-2, second = ls.size()-1;
+
         for(; first >= 0; first--, second--){
-            min = Math.min(min, first);
             if(ls.get(second) > ls.get(first)){
-                Collections.swap(ls, min, first);
+
+                int minIndexOfNextElement = findNextLeastGreaterThanCurr(ls, first, second);
+
+                Collections.swap(ls, minIndexOfNextElement, first);
+
+                //sort from second to ls.size() // last index is exclusive
+                sort(ls, second, ls.size());
                 break;
             }
         }
-        for(int i = second; i < ls.size(); i++){
-            for(int j = i+1; j < ls.size(); j++){
-                if(ls.get(i) < ls.get(j)){
-                    Collections.swap(ls, i, j);
-                }
-            }
-        }
 
-        // now convert ls to number
-        int newNumber = 0;
-        for(int i = 0; i < ls.size(); i++){
-            newNumber += ls.get(i) * Math.pow(10,ls.size()-1-i);
-        }
+        int newNumber = convertListToNumber(ls);
+
         if(n == newNumber){
             return -1;
         } else {
