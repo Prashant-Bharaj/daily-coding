@@ -5,52 +5,27 @@ import java.util.*;
 class ThreeSum {
 
     public List<List<Integer>> threeSum(Integer[] nums) {
-        List<List<Integer>> ans = new ArrayList<List<Integer>>();
         HashSet<List<Integer>> unique = new HashSet<List<Integer>>();
-
-//        int l, r;
-//
-//        // Fix the first element as A[i]
-//        for (int i = 0; i < nums.length - 2; i++) {
-//
-//            // Fix the second element as A[j]
-//            for (int j = i + 1; j < nums.length - 1; j++) {
-//
-//                // Now look for the third number
-//                for (int k = j + 1; k < nums.length; k++) {
-//                    if (nums[i] + nums[j] + nums[k] == 0) {
-//                        List<Integer> temp = new ArrayList<>();
-//                        temp.add(nums[i]);
-//                        temp.add(nums[j]);
-//                        temp.add(nums[k]);
-//                        unique.add(temp);
-//                    }
-//                }
-//            }
-//        }
-        // Fix the first element as A[i]
-        for (int i = 0; i < nums.length - 2; i++) {
-
-            // Find pair in subarray A[i+1..n-1]
-            // with sum equal to sum - A[i]
-            HashSet<Integer> s = new HashSet<Integer>();
-            int curr_sum = 0 - nums[i];
-            for (int j = i + 1; j < nums.length; j++)
-            {
-                if (s.contains(curr_sum - nums[j]))
-                {
-                        List<Integer> temp = new ArrayList<>();
+        List<List<Integer>> ans = new ArrayList<List<Integer>>();
+        Arrays.sort(nums);
+        for(int i = 0; i < nums.length-2; i++){
+            for(int j = i+1; j < nums.length-1; j++){
+                for(int k = j+1; k < nums.length; k++){
+                    if(nums[i]+nums[j]+nums[k] == 0){
+                            List<Integer> temp = new ArrayList<>();
                         temp.add(nums[i]);
                         temp.add(nums[j]);
-                        temp.add(curr_sum - nums[j]);
+                        temp.add(nums[k]);
                         unique.add(temp);
+                    }
                 }
-                s.add(nums[j]);
             }
         }
+
         for(List<Integer> ls : unique){
             ans.add(ls);
         }
+
         return ans;
     }
 
