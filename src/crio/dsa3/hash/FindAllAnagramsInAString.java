@@ -4,54 +4,42 @@ import java.util.*;
 
 // Implement your solution here
 class FindAllAnagramsInAString {
-    public boolean checkAnagrams(TreeMap<Character, Integer> shm, TreeMap<Character, Integer> phm){
-        if(shm.size() != phm.size()) return false;
-        Iterator<Map.Entry<Character, Integer>> shmi = shm.entrySet().iterator();
-        Iterator<Map.Entry<Character, Integer>> phmi = phm.entrySet().iterator();
-        while(shmi.hasNext() && phmi.hasNext()){
-            Map.Entry<Character, Integer> sentry = shmi.next();
-            Map.Entry<Character, Integer> pentry = phmi.next();
-            if(sentry.getKey() != pentry.getKey() || sentry.getValue() != pentry.getValue()){
-                return false;
-            }
+    public boolean check(int[] first, int[] second){
+        for(int i = 0; i < 26; i++){
+            if(first[i] != second[i]) return false;
         }
         return true;
     }
 
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> ans = new ArrayList<>();
-        TreeMap<Character, Integer> phm = new TreeMap<>();
-        int pl = p.length();
-        int slow = 0, fast = 0;
-        for(Character c : p.toCharArray()){
-            if(c >= 'a' && c <= 'z') {
-                phm.put(c, phm.getOrDefault(c, 0) + 1);
-                fast++;
-            }
+        int[] sCount = new int[26];
+        int[] pCount = new int[26];
+        int left = 0, right = 0;
+        while(right < p.length()){
+            pCount[p.charAt(right)-'a']++;
+            right++;
+        }
+        right-=1;
+        for(int i = 0; i <= right%s.length(); i++){
+            sCount[s.charAt(i)-'a']++;
         }
 
-        if(pl > s.length()) return new ArrayList<>();
-        TreeMap<Character, Integer> hm = new TreeMap<>();
-
-        for(int i = 0; i < pl; i++){
-            if(s.charAt(i) >= 'a' && s.charAt(i) <= 'z')
-            hm.put(s.charAt(i), hm.getOrDefault(s.charAt(i), 0)+1);
+        if(check(sCount, pCount)){
+            ans.add(left);
         }
-        if(checkAnagrams(hm, phm)){
-            ans.add(slow);
-        }
-        fast++;
-        while(fast < s.length()){
-            hm.put(s.charAt(slow), hm.get(s.charAt(slow)) -1);
-            if(hm.get(s.charAt(slow)) == 0){
-                hm.remove(s.charAt(slow));
-            }
-            slow++;
 
-            hm.put(s.charAt(fast), hm.getOrDefault(s.charAt(fast), 0) + 1);
-            fast++;
-            if(checkAnagrams(hm,phm)){
-                ans.add(slow);
+        right++;
+
+        while(right < s.length()){
+            sCount[s.charAt(left)-'a']--;
+            left++;
+
+            sCount[s.charAt(right)-'a']++;
+            right++;
+
+            if(check(sCount,pCount)){
+                ans.add(left);
             }
         }
         return ans;
@@ -59,12 +47,11 @@ class FindAllAnagramsInAString {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-//        String[] input = new String[2];
-//        input = scanner.nextLine().split(" ");
-//        String s = input[0];
-//        String p = input[1];
-        String s =scanner.nextLine();
-        String p = scanner.nextLine();
+        String[] input = new String[2];
+        input = scanner.nextLine().split(" ");
+        String s = input[0];
+        String p = input[1];
+
         scanner.close();
 
         List<Integer> result = new FindAllAnagramsInAString().findAnagrams(s,p);
