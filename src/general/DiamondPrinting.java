@@ -18,6 +18,9 @@ class DiamondPrinting {
 
     // TODO: Implement this method
     static String[] diamondPrinting(int n) {
+
+
+
         String[] ans = new String[2*n];
         int mid = n-1;
         for(int i = 0; i < n; i++){
